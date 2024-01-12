@@ -60,7 +60,8 @@ public:
     T getY() const { return position.y; }
 
     void Move() override {}
-    bool CheckPos(int pos) const override
+    
+    bool CheckPos(int /*pos*/) const override
     {
         return false;
     }
@@ -150,17 +151,16 @@ public:
 class Game
 {
 private:
-    bool quit;
     int numberOfLanes;
     int width;
-    int score;
+    bool quit;
     std::unique_ptr<Player<int>> player;
+    int score;
     vector<std::unique_ptr<GameObj>> map;
     vector<PlayerObserver*> observers;
 
 public:
-    //Se introduc obiecte de tip player, lane si obstacle
-    Game(int w = 20, int h = 10) : numberOfLanes(h), width(w), quit(false), player(nullptr), score(0)
+    Game(int w = 20, int h = 10) : width(w), numberOfLanes(h), quit(false), player(nullptr), score(0)
     {
         srand(time(0));
         for (int i = 0; i < numberOfLanes; i++)
@@ -174,7 +174,7 @@ public:
         player = std::make_unique<Player<int>>(width);
     }
 
-    Game(const Game& other) : numberOfLanes(other.numberOfLanes), width(other.width), quit(other.quit), score(other.score)
+    Game(const Game& other) : numberOfLanes(other.numberOfLanes), width(other.width), quit(other.quit), player(nullptr), score(other.score)
     {
         player = std::make_unique<Player<int>>(*other.player);
         for (const auto& obj : other.map)
